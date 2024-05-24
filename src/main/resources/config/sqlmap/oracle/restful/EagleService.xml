@@ -1,0 +1,883 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nht.moniwebsvc.restful.dao.EagleServiceMapper">
+	<!--
+        <resultMap id="getAtmInfo" type="java.util.HashMap">
+             <result property="sRseq" column="R_SEQ" />
+             <result property="sTermId" column="TERM_ID" />
+             <result property="sTermNo" column="TERM_NO" />
+             <result property="sAssetSno" column="ASSET_SNO" />
+             <result property="sBranchCd" column="BRANCH_CD" />
+             <result property="sBranchName" column="BRANCH_NAME" />
+             <result property="sArea" column="AREA" />
+             <result property="sAreaName" column="AREA_NAME" />
+             <result property="sCity" column="CITY" />
+             <result property="sLocation" column="LOCATION" />
+             <result property="sSettleDate" column="SETTLE_DATE" />
+             <result property="sModelCd" column="MODEL_CD" />
+             <result property="sModelName" column="MODEL_NAME" />
+             <result property="sAtmStatus" column="ATM_STATUS" />
+             <result property="sAtmStatusName" column="ATM_STATUS_NAME" />
+             <result property="sUptime" column="UPTIME" />
+             <result property="sAtmIp" column="ATM_IP" />
+             <result property="sLiveDate" column="LIVE_DATE" />
+        </resultMap>
+
+        <resultMap id="getTicketList" type="java.util.HashMap">
+             <result property="ifNo" column="IF_NO" />
+             <result property="tnNo" column="TN_NO" />
+             <result property="termId" column="TERM_ID" />
+             <result property="termNo" column="TERM_NO" />
+             <result property="nodeCd" column="NODE_CD" />
+             <result property="ticketStatus" column="TICKET_STATUS" />
+             <result property="cmplCd" column="CMPL_CD" />
+             <result property="cmplDescription" column="CMPL_DESCRIPTION" />
+             <result property="errorCd" column="ERROR_CD" />
+             <result property="eventDate" column="EVENT_DATE" />
+             <result property="eventTime" column="EVENT_TIME" />
+             <result property="ticketComment" column="TICKET_COMMENT" />
+             <result property="ifSendDate" column="IF_SEND_DATE" />
+             <result property="ifSendDateText" column="IF_SEND_DATE_TEXT" />
+             <result property="ifSendTmeText" column="IF_SEND_TME_TEXT" />
+             <result property="ifSendFlag" column="IF_SEND_FLAG" />
+             <result property="ifSendResult" column="IF_SEND_RESULT" />
+             <result property="ifResDate" column="IF_RES_DATE" />
+             <result property="ifResDateText" column="IF_RES_DATE_TEXT" />
+             <result property="ifResTmeText" column="IF_RES_TME_TEXT" />
+             <result property="ifResResult" column="IF_RES_RESULT" />
+             <result property="cancelDate" column="CANCEL_DATE" />
+             <result property="cancelDateText" column="CANCEL_DATE_TEXT" />
+             <result property="cancelTmeText" column="CANCEL_TME_TEXT" />
+             <result property="regDate" column="REG_DATE" />
+             <result property="regDateText" column="REG_DATE_TEXT" />
+             <result property="regTmeText" column="REG_TME_TEXT" />
+        </resultMap>
+
+
+        <insert id="insertAllAtmInfo">
+            <![CDATA[
+                INSERT INTO T_ATM_WEBSERVICE_SYNC_LOG
+                (
+                R_SEQ,
+                TERM_ID,
+                TERM_NO,
+                ASSET_SNO,
+                BRANCH_CD,
+                BRANCH_NAME,
+                AREA,
+                AREA_NAME,
+                CITY,
+                LOCATION,
+                SETTLE_DATE,
+                MODEL_CD,
+                MODEL_NAME,
+                ATM_STATUS,
+                ATM_STATUS_NAME,
+                ATM_IP,
+                LIVE_DATE,
+                PROC_DATE,
+                PROC_TIME
+                )
+              select
+              GET_ATM_WEBSERVICE_SYNC_NO.Nextval
+              , a.TERM_ID
+              , a.TERM_NO
+              , a.ASSET_SNO
+              , a.BRANCH_CD
+              ,a.SUB_ORDINARY_BRANCH as BRANCH_NAME
+              , a.AREA
+              , FTCCO_GETCODENAME('ENG', '227', a.AREA) AS AREA_NAME
+              , a.CITY
+              , a.LOCATION
+              , a.SETTLE_DATE
+              , a.MODEL_CD
+              , a.MODEL_NAME
+              , a.ATM_STATUS
+              , FTCCO_GETCODENAME('ENG', '128', a.ATM_STATUS      ) as ATM_STATUS_NAME
+              , a.ATM_IP
+              , a.SERVICE_START_DATE as LIVE_DATE
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS PROC_DATE
+              , TO_CHAR(SYSDATE, 'HH24MISS') AS PROC_TIME
+              from V_TERMINAL_INFORMATION  a inner join T_ATM c on a.term_id = c.term_id
+              left join  T_ATMSTATUS b on a.TERM_ID  = b.TERM_ID
+              left join  T_AGENTSTATUS e on a.ATM_IP   = e.ATM_IP
+              left join  T_ATM_TYPE d on a.ATM_TYPE_CD  = d.ATM_TYPE_CD
+            ]]>
+        </insert>
+        <select id="getAtmLogInfo" resultMap="getAtmInfo">
+            <![CDATA[
+                select
+                 CONCAT(a.R_SEQ,'') as R_SEQ
+                 , a.TERM_ID
+                 , a.TERM_NO
+                 , a.ASSET_SNO
+                 , a.BRANCH_CD
+                 , a.BRANCH_NAME
+                 , a.AREA
+                 , a.AREA_NAME
+                 , a.CITY
+                 , a.LOCATION
+                 , a.SETTLE_DATE
+                 , a.MODEL_CD
+                 , a.MODEL_NAME
+                 , a.UPTIME
+                 , a.ATM_STATUS
+                 , a.ATM_STATUS_NAME
+                 , a.ATM_IP
+                 , a.LIVE_DATE
+                from T_ATM_WEBSERVICE_LOG a
+                where a.PROC_FLAG in ('N','F')
+            ]]>
+        </select>
+        <select id="getAtmHistoryInfo" resultMap="getAtmInfo">
+            <![CDATA[
+                select
+                 CONCAT(a.R_SEQ,'') as R_SEQ
+               , a.TERM_ID
+               , a.TERM_NO
+               , a.ASSET_SNO
+               , a.BRANCH_CD
+               , a.BRANCH_NAME
+               , a.AREA
+               , a.AREA_NAME
+               , a.CITY
+               , a.LOCATION
+               , a.SETTLE_DATE
+               , a.MODEL_CD
+               , a.MODEL_NAME
+               , a.ATM_STATUS
+               , a.ATM_STATUS_NAME
+               , 'Y' AS UPTIME
+               , a.ATM_IP
+               , a.LIVE_DATE
+              from T_ATM_HISTORY a
+              where a.PROC_FLAG ='N'
+                and rownum < 101
+            ]]>
+        </select>
+         <insert id="insertAtmInfo" parameterType="WebServiceSendDTO">
+            <![CDATA[
+            INSERT INTO T_ATM_WEBSERVICE_LOG (
+                 R_SEQ,           TERM_ID, TERM_NO,   ASSET_SNO , BRANCH_CD
+                ,BRANCH_NAME,     AREA,    AREA_NAME, CITY,       LOCATION
+                ,SETTLE_DATE,     MODEL_CD,MODEL_NAME,UPTIME,     ATM_STATUS
+                ,ATM_STATUS_NAME, ATM_IP,  LIVE_DATE, PROC_DATE,  PROC_TIME
+                ) VALUES (
+                GET_ATM_WEBSERVICE_NO.NEXTVAL,  #{TERM_ID},  #{TERM_NO},    #{ASSET_SNO}, #{BRANCH_CD}
+               ,#{BRANCH_NAME},                 #{AREA},     #{AREA_NAME},  #{CITY},      #{LOCATION}
+               ,#{SETTLE_DATE},                 #{MODEL_CD}, #{MODEL_NAME}, #{UPTIME},    #{ATM_STATUS}
+               ,#{ATM_STATUS_NAME} ,            #{ATM_IP},   #{LIVE_DATE},  TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS')
+               )
+            ]]>
+        </insert>
+        <update id="updateAtmHistoryProcFlag" parameterType="WebServiceSendDTO">
+            <![CDATA[
+                UPDATE T_ATM_HISTORY
+                SET PROC_FLAG = 'Y'
+                WHERE CONCAT(R_SEQ,'') = #{R_SEQ}
+            ]]>
+        </update>
+        <select id="getAtmLogCount" parameterType="WebServiceSendDTO" resultType="java.lang.Integer">
+            <![CDATA[
+                select
+                 count(*)
+                from T_ATM_WEBSERVICE_LOG a
+                where TERM_ID = #{TERM_ID}
+                and R_SEQ > CAST(#{R_SEQ} AS NUMBER)
+            ]]>
+        </select>
+        <update id="updateAtmLogProcFlag" parameterType="WebServiceSendDTO">
+            UPDATE T_ATM_WEBSERVICE_LOG
+            SET PROC_FLAG = #{PROC_FLAG},
+                PROC_COUNT = (PROC_COUNT+1)
+            WHERE CONCAT(R_SEQ,'') = #{R_SEQ}
+        </update>
+        &lt;!&ndash; 전체 데이터 sync &ndash;&gt;
+        <insert id="insertAllModelInfo">
+            <![CDATA[
+                INSERT INTO T_MODEL_WEBSERVICE_SYNC_LOG
+                (
+                R_SEQ,
+                ATM_CO_CD,
+                ATM_CO_NAME,
+                MODEL_CD,
+                MODEL_NAME,
+                PROC_DATE,
+                PROC_TIME
+                )
+                select
+                  GET_MODEL_WEBSERVICE_SYNC_NO.NEXTVAL
+                , ATM_CO_CD
+                , FTCCO_GETPROVIDERNAME(ATM_CO_CD,'','','') as ATM_CO_NAME
+                , MODEL_CD
+                , MODEL_NAME
+                , TO_CHAR(SYSDATE, 'YYYYMMDD') AS PROC_DATE
+                , TO_CHAR(SYSDATE, 'HH24MISS') AS PROC_TIME
+                 from T_ATMMODEL
+            ]]>
+        </insert>
+        <resultMap id="getModelInfo" type="java.util.HashMap">
+             <result property="sRseq" column="R_SEQ" />
+             <result property="sAtmCoCd" column="ATM_CO_CD" />
+             <result property="sAtmCoName" column="ATM_CO_NAME" />
+             <result property="sModelCd" column="MODEL_CD" />
+             <result property="sModelName" column="MODEL_NAME" />
+             <result property="sUpdate" column="UPTIME" />
+        </resultMap>
+
+        <select id="getModelLogInfo" parameterType="java.util.HashMap" resultMap="getModelInfo">
+            <![CDATA[
+                select
+                 CONCAT(a.R_SEQ,'') as R_SEQ
+                 , a.ATM_CO_CD
+                 , a.ATM_CO_NAME
+                 , a.MODEL_CD
+                 , a.MODEL_NAME
+                 , a.UPTIME
+                from T_MODEL_WEBSERVICE_SYNC_LOG a
+                where a.PROC_FLAG in ('N','F')
+            ]]>
+        </select>
+
+        <update id="updateModelLogProcFlag" parameterType="WebServiceSendDTO">
+            UPDATE T_MODEL_WEBSERVICE_SYNC_LOG
+            SET PROC_FLAG = #{PROC_FLAG},
+                PROC_COUNT = (PROC_COUNT+1)
+            WHERE CONCAT(R_SEQ,'') = #{R_SEQ}
+        </update>
+
+        <insert id="insertAllErrorCodeInfo">
+            <![CDATA[
+                INSERT INTO T_ERRORCODE_WEBSERVICE_SYNC_LOG
+                (R_SEQ, ATM_CO_CD, ATM_CO_NAME, ERR_MODULE , ATM_ERR_CD ,ERR_CONTENTS ,USEABLE, AUTO_CALL_FLAG,PROC_DATE,PROC_TIME)
+                select
+                   GET_ERRCD_WEBSERVICE_SYNC_NO.Nextval
+                ,ATM_CO_CD
+                , FTCCO_GETPROVIDERNAME(ATM_CO_CD,'','','') as ATM_CO_NAME
+                , ERR_MODULE
+                , ATM_ERR_CD
+                , ERR_CONTENTS
+                , 'Y' AS USEABLE
+                ,(CASE
+                WHEN AUTO_CALL_FLAG1='1'
+                THEN '1'
+                WHEN AUTO_CALL_FLAG2='1'
+                THEN '2'
+                WHEN AUTO_CALL_FLAG3='1'
+                THEN '3'
+                END) as AUTO_CALL_FLAG
+                , TO_CHAR(SYSDATE, 'YYYYMMDD')
+                , TO_CHAR(SYSDATE, 'HH24MISS')
+                from T_ERRORCODE
+                where (NVL(AUTO_CALL_FLAG1,'0')='1' and NVL(AUTO_CALL_FLAG2,'0')!='1' and NVL(AUTO_CALL_FLAG3,'0')!='1')
+                or (NVL(AUTO_CALL_FLAG1,'0')!='1' and NVL(AUTO_CALL_FLAG2,'0')='1' and NVL(AUTO_CALL_FLAG3,'0')!='1')
+                or (NVL(AUTO_CALL_FLAG1,'0')!='1' and NVL(AUTO_CALL_FLAG2,'0')!='1' and NVL(AUTO_CALL_FLAG3,'0')='1')
+            ]]>
+        </insert>
+        <resultMap id="getErrorCodeInfo" type="java.util.HashMap">
+             <result property="sRseq" column="R_SEQ" />
+             <result property="sAtmCoCd" column="ATM_CO_CD" />
+             <result property="sAtmCoName" column="ATM_CO_NAME" />
+             <result property="sErrModule" column="ERR_MODULE" />
+             <result property="sAtmErrCd" column="ATM_ERR_CD" />
+             <result property="sErrContents" column="ERR_CONTENTS" />
+             <result property="sUseable" column="USEABLE" />
+             <result property="sAutoCallFlag" column="AUTO_CALL_FLAG" />
+        </resultMap>
+
+        <select id="getErrorCodeLogInfo" parameterType="java.util.HashMap" resultMap="getErrorCodeInfo">
+            <![CDATA[
+                select
+                 CONCAT(a.R_SEQ,'') as R_SEQ
+                 , a.ATM_CO_CD
+                 , a.ATM_CO_NAME
+                 , a.ERR_MODULE
+                 , a.ATM_ERR_CD
+                 , a.ERR_CONTENTS
+                 , a.USEABLE
+                 , a.AUTO_CALL_FLAG
+                from T_ERRCD_WEBSERVICE_SYNC_LOG a
+                where a.PROC_FLAG in ('N','F')
+            ]]>
+        </select>
+        <select id="getErrorCodeLogCount" parameterType="WebServiceSendDTO" resultType="java.lang.Integer">
+            <![CDATA[
+                select
+                 count(*)
+                from T_ERRCD_WEBSERVICE_SYNC_LOG a
+                where ATM_CO_CD = #{ATM_CO_CD}
+                and ATM_ERR_CD = #{ATM_ERR_CD}
+                and R_SEQ > CAST(#{R_SEQ} AS INT)
+            ]]>
+        </select>
+        <update id="updateErrorCodeLogProcFlag" parameterType="WebServiceSendDTO">
+            UPDATE T_ERRCD_WEBSERVICE_SYNC_LOG
+            SET PROC_FLAG = #{PROC_FLAG},
+                PROC_COUNT = (PROC_COUNT+1)
+            WHERE CONCAT(R_SEQ,'') = #{R_SEQ}
+        </update>
+        <insert id="insertAllBranchInfo">
+            <![CDATA[
+                INSERT INTO T_BRAN_WEBSERVICE_SYNC_LOG
+                (
+                R_SEQ,
+                BRANCH_CD,
+                BRANCH_NAME,
+                STATUS,
+                ADDRESS,
+                ZIP_CD,
+                CELL_PHONE_NO,
+                PHONE_NO,
+                FAX_NO,
+                LATITUDE,
+                LONGITUDE,
+                PROC_DATE,
+                PROC_TIME
+                )
+                select
+                  GET_BRAN_WEBSERVICE_SYNC_NO.NEXTVAL
+                , a.BRANCH_CD
+                , a.BRANCH_NAME
+                , 'OPEN' as STATUS
+                , a.ADDRESS
+                , a.ZIP_CD
+                , a.CELL_PHONE_NO
+                , a.PHONE_NO
+                , a.FAX_NO
+                , (select  LAT  from T_MAPPOINT  where POINT_NO = a.POINT_NO) AS  LATITUDE
+                , (select  LNG  from T_MAPPOINT  where POINT_NO = a.POINT_NO) AS  LONGITUDE
+                , TO_CHAR(SYSDATE, 'YYYYMMDD') AS PROC_DATE
+                , TO_CHAR(SYSDATE, 'HH24MISS') AS PROC_TIME
+                from T_BRANCH a
+            ]]>
+        </insert>
+        <resultMap id="getBranchInfo" type="java.util.HashMap">
+             <result property="sRseq" column="R_SEQ" />
+             <result property="sBranchCd" column="BRANCH_CD" />
+             <result property="sBranchName" column="BRANCH_NAME" />
+             <result property="sStatus" column="STATUS" />
+             <result property="sAddress" column="ADDRESS" />
+             <result property="sZipCd" column="ZIP_CD" />
+             <result property="sCellPhoneNo" column="CELL_PHONE_NO" />
+             <result property="sPhoneNo" column="PHONE_NO" />
+             <result property="sFaxNo" column="FAX_NO" />
+             <result property="sLatitude" column="LATITUDE" />
+             <result property="sLongitude" column="LONGITUDE" />
+        </resultMap>
+
+        <select id="getBranchLogInfo" parameterType="java.util.HashMap" resultMap="getBranchInfo">
+            <![CDATA[
+                select
+                 CONCAT(a.R_SEQ,'') as R_SEQ
+                 , BRANCH_CD
+                 , BRANCH_NAME
+                 , STATUS
+                 , ADDRESS
+                 , ZIP_CD
+                 , CELL_PHONE_NO
+                 , PHONE_NO
+                 , FAX_NO
+                 , CONCAT(LATITUDE,'') as LATITUDE
+                 , CONCAT(LONGITUDE,'') as LONGITUDE
+                from T_BRAN_WEBSERVICE_SYNC_LOG a
+                where a.PROC_FLAG in ('N','F')
+            ]]>
+        </select>
+
+        <select id="getBranchLogCount" parameterType="WebServiceSendDTO" resultType="java.lang.Integer">
+            <![CDATA[
+                select
+                 count(*)
+                from T_BRAN_WEBSERVICE_SYNC_LOG a
+                where BRANCH_CD = #BRANCH_CD#
+                and R_SEQ > CAST(#{R_SEQ} AS INT)
+            ]]>
+        </select>
+        <insert id="insertAllMoniErrorCodeInfo">
+            <![CDATA[
+                INSERT INTO T_MONI_ERRCD_WEBSVC_SYNC_LOG
+                (
+                R_SEQ,
+                CMPL_CD,
+                CMPL_TXT,
+                ALERT_TYPE,
+                PROC_DATE,
+                PROC_TIME
+                )
+                select
+                GET_MONI_ERRCD_WEBSVC_SYNC_NO.nextval,
+              a.CMPL_CD,
+              a.CMPL_TXT,
+              a.ALERT_TYPE,
+              TO_CHAR(SYSDATE, 'YYYYMMDD') AS PROC_DATE,
+              TO_CHAR(SYSDATE, 'HH24MISS') AS PROC_TIME
+              from T_TICKET_ALERT_CONDITION a
+            ]]>
+        </insert>
+        <resultMap id="getMoniErrorCodeInfo" type="java.util.HashMap">
+             <result property="sRseq" column="R_SEQ" />
+             <result property="sCmplCd" column="CMPL_CD" />
+             <result property="sCmplTxt" column="CMPL_TXT" />
+             <result property="sAlertType" column="ALERT_TYPE" />
+        </resultMap>
+
+        <select id="getMoniErrorCodeLogInfo" parameterType="java.util.HashMap" resultMap="getMoniErrorCodeInfo">
+            <![CDATA[
+                select
+                 CONCAT(a.R_SEQ,'') as R_SEQ
+                 , CMPL_CD
+                 , CMPL_TXT
+                 , ALERT_TYPE
+                from T_MONI_ERRCD_WEBSVC_SYNC_LOG a
+                where a.PROC_FLAG in ('N','F')
+            ]]>
+        </select>
+        <select id="getMoniErrorCodeLogCount" parameterType="WebServiceSendDTO" resultType="java.lang.Integer">
+            <![CDATA[
+                select
+                 count(*)
+                from T_MONI_ERRCD_WEBSVC_SYNC_LOG a
+                where CMPL_CD = #{CMPL_CD}
+                and R_SEQ > CAST(#{R_SEQ} AS NUMBER)
+            ]]>
+        </select>
+        <update id="updateMoniErrorCodeLogProcFlag" parameterType="WebServiceSendDTO">
+            UPDATE T_MONI_ERRCD_WEBSVC_SYNC_LOG
+            SET PROC_FLAG = #{PROC_FLAG},
+                PROC_COUNT = (PROC_COUNT+1)
+            WHERE CONCAT(R_SEQ,'') = #{R_SEQ}
+        </update>
+        &lt;!&ndash; history 데이터 업데이트 &ndash;&gt;
+        <select id="getModelHistoryInfo" parameterType="java.util.HashMap" resultMap="getModelInfo">
+            <![CDATA[
+                SELECT
+                 CONCAT(A.R_SEQ,'') AS R_SEQ
+               , ATM_CO_CD
+               , FTCCO_GETPROVIDERNAME(ATM_CO_CD,'','','') AS ATM_CO_NAME
+               , MODEL_CD
+               , MODEL_NAME
+               , 'Y' AS UPTIME
+              FROM T_MODEL_HISTORY A
+              WHERE A.PROC_FLAG ='N'
+                AND ROWNUM = 1
+            ]]>
+        </select>
+         <insert id="insertModelInfo" parameterType="WebServiceSendDTO">
+            <![CDATA[
+            INSERT INTO T_MODEL_WEBSERVICE_LOG (
+                 R_SEQ,  ATM_CO_CD, ATM_CO_NAME, MODEL_CD , MODEL_NAME
+                ,UPTIME ,PROC_DATE, PROC_TIME
+            ) VALUES (
+                GET_MODEL_WEBSERVICE_NO.nextval, #{ATM_CO_CD},                #{ATM_CO_NAME}, #{MODEL_CD}, #{MODEL_NAME}
+               ,#{UPTIME},                        TO_CHAR(SYSDATE,'YYYYMMDD'),TO_CHAR(SYSDATE,'HH24MISS')
+            )
+            ]]>
+        </insert>
+        <update id="updateModelHistoryProcFlag" parameterType="WebServiceSendDTO">
+            <![CDATA[
+                UPDATE T_MODEL_HISTORY
+                SET PROC_FLAG = 'Y'
+                WHERE CONCAT(R_SEQ,'') = #{R_SEQ}
+            ]]>
+        </update>
+        <select id="getModelLogCount" parameterType="WebServiceSendDTO" resultType="java.lang.Integer">
+            <![CDATA[
+                select
+                 count(*)
+                from T_MODEL_WEBSERVICE_LOG a
+                where ATM_CO_CD = #{ATM_CO_CD}
+                and MODEL_CD = #{MODEL_CD}
+                and R_SEQ > CAST(#{R_SEQ} AS INT)
+            ]]>
+        </select>
+        <select id="getErrorCodeHistoryInfo" parameterType="java.util.HashMap" resultMap="getErrorCodeInfo">
+            <![CDATA[
+                select
+                 CONCAT(a.R_SEQ,'') as R_SEQ
+                 , ATM_CO_CD
+               , FTCCO_GETPROVIDERNAME(ATM_CO_CD,'','','') as ATM_CO_NAME
+               , ERR_MODULE
+               , ATM_ERR_CD
+               , ERR_CONTENTS
+               , 'Y' AS USEABLE
+               , AUTO_CALL_FLAG
+              from T_ERRORCODE_HISTORY  a
+              where a.PROC_FLAG ='N'
+                and rownum < 101
+            ]]>
+        </select>
+         <insert id="insertErrorCodeInfo" parameterType="WebServiceSendDTO">
+            <![CDATA[
+            INSERT INTO T_ERRCD_WEBSERVICE_LOG (
+                 R_SEQ,        ATM_CO_CD, ATM_CO_NAME,   ERR_MODULE , ATM_ERR_CD
+                ,ERR_CONTENTS ,USEABLE,   AUTO_CALL_FLAG,PROC_DATE,   PROC_TIME
+            )	VALUES (
+                 GET_ERRCD_WEBSERVICE_NO.nextval, #{ATM_CO_CD}, #{ATM_CO_NAME},   #{ERR_MODULE}, #{ATM_ERR_CD}
+                ,#{ERR_CONTENTS},                  #{USEABLE},   #{AUTO_CALL_FLAG},TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS')
+            )
+            ]]>
+        </insert>
+        <update id="updateErrorCodeHistoryProcFlag" parameterType="WebServiceSendDTO">
+            <![CDATA[
+                UPDATE T_ERRORCODE_HISTORY
+                SET PROC_FLAG = 'Y'
+                WHERE CONCAT(R_SEQ,'') = #{R_SEQ}
+            ]]>
+        </update>
+        <select id="getBranchHistoryInfo" parameterType="java.util.HashMap" resultMap="getBranchInfo">
+            <![CDATA[
+                select
+                 CONCAT(a.R_SEQ,'') as R_SEQ
+               , BRANCH_CD
+               , BRANCH_NAME
+               , 'OPEN' as STATUS
+               , ADDRESS
+               , ZIP_CD
+               , CELL_PHONE_NO
+               , PHONE_NO
+               , FAX_NO
+               , CONCAT(LATITUDE,'') as LATITUDE
+               , CONCAT(LONGITUDE,'') as LONGITUDE
+              from T_BRANCH_HISTORY  a
+              where a.PROC_FLAG ='N'
+                AND ROWNUM = 1
+            ]]>
+        </select>
+         <insert id="insertBranchInfo" parameterType="WebServiceSendDTO">
+            <![CDATA[
+            INSERT INTO T_BRAN_WEBSERVICE_LOG (
+                 R_SEQ,    BRANCH_CD,     BRANCH_NAME, STATUS , ADDRESS
+                ,ZIP_CD ,  CELL_PHONE_NO, PHONE_NO,    FAX_NO,  LATITUDE
+                ,LONGITUDE,PROC_DATE,     PROC_TIME
+            )	VALUES (
+                GET_BRAN_WEBSERVICE_NO.NEXTVAL,
+                            #{BRANCH_CD},     #{BRANCH_NAME}, #{STATUS}, #{ADDRESS}
+               ,#{ZIP_CD},  #{CELL_PHONE_NO}, #{PHONE_NO},    #{FAX_NO}, NVL(#{LATITUDE},'0')
+               ,NVL(#{LONGITUDE},'0'), TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS')
+            )
+            ]]>
+        </insert>
+        <update id="updateBranchHistoryProcFlag" parameterType="WebServiceSendDTO">
+            <![CDATA[
+                UPDATE T_BRANCH_HISTORY
+                SET PROC_FLAG = 'Y'
+                WHERE CONCAT(R_SEQ,'') = #{R_SEQ}
+            ]]>
+        </update>
+        <update id="updateBranchLogProcFlag" parameterType="WebServiceSendDTO">
+            UPDATE T_BRAN_WEBSERVICE_LOG
+            SET PROC_FLAG = #{PROC_FLAG},
+                PROC_COUNT = (PROC_COUNT+1)
+            WHERE CONCAT(R_SEQ,'') = #{R_SEQ}
+        </update>
+        <select id="getMoniErrorCodeHistoryInfo" parameterType="java.util.HashMap" resultMap="getMoniErrorCodeInfo">
+            <![CDATA[
+                select
+                 CONCAT(a.R_SEQ,'') as R_SEQ
+                 , CMPL_CD
+                 , CMPL_TXT
+                 , ALERT_TYPE
+                from T_MONI_ERRORCODE_HISTORY  a
+                where a.PROC_FLAG ='N'
+                  and rownum < 101
+            ]]>
+        </select>
+         <insert id="insertMoniErrorCodeInfo" parameterType="WebServiceSendDTO">
+            <![CDATA[
+            INSERT INTO T_MONI_ERRCD_WEBSVC_LOG	(
+                R_SEQ, CMPL_CD, CMPL_TXT,ALERT_TYPE,PROC_DATE,PROC_TIME
+            ) VALUES (
+                GET_MONI_ERRCD_WEBSVC_NO.nextval, #{CMPL_CD}, #{CMPL_TXT},#{ALERT_TYPE},TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS')
+            )
+            ]]>
+        </insert>
+        <update id="updateMoniErrorCodeHistoryProcFlag" parameterType="WebServiceSendDTO">
+            <![CDATA[
+                UPDATE T_MONI_ERRORCODE_HISTORY
+                SET PROC_FLAG = 'Y'
+                WHERE CONCAT(R_SEQ,'') = #{R_SEQ}
+            ]]>
+        </update>
+         &lt;!&ndash;**************************************
+        /////////////////////////////////////////////////////////////////////////////////////
+        // 로그파일 삭제 기간
+        /////////////////////////////////////////////////////////////////////////////////////
+        ************************************** &ndash;&gt;
+        <select id="getDelTerm" parameterType="WebServiceSendDTO" resultType="java.lang.Integer">
+            <![CDATA[
+                select
+                CAST(trim(NAME) AS NUMBER) AS GET_DEL_TERM
+                from T_CODE a
+                where LANG_CD='ENG'
+                AND GROUP_CD = '412';
+            ]]>
+        </select>
+
+
+        <select id="getNewTicketList" resultMap="getTicketList">
+            <![CDATA[
+                SELECT
+                IF_NO
+                ,TN_NO
+                ,TERM_ID
+                ,TERM_NO
+                ,NODE_CD
+                ,TICKET_STATUS
+                ,CMPL_CD
+                ,CMPL_DESCRIPTION
+                ,ERROR_CD
+                ,EVENT_DATE
+                ,EVENT_TIME
+                ,TICKET_COMMENT
+                ,IF_SEND_DATE
+                ,IF_SEND_DATE_TEXT
+                ,IF_SEND_TME_TEXT
+                ,IF_SEND_FLAG
+                ,IF_SEND_RESULT
+                ,IF_RES_DATE
+                ,IF_RES_DATE_TEXT
+                ,IF_RES_TME_TEXT
+                ,IF_RES_RESULT
+                ,CANCEL_DATE
+                ,CANCEL_DATE_TEXT
+                ,CANCEL_TME_TEXT
+                ,REG_DATE
+                ,REG_DATE_TEXT
+                ,REG_TME_TEXT
+                FROM(
+                SELECT
+                IF_NO
+                ,TO_CHAR(TN_NO) AS TN_NO
+                ,TERM_ID
+                ,TERM_NO
+                ,NODE_CD
+                ,TICKET_STATUS
+                ,CMPL_CD
+                ,CMPL_DESCRIPTION
+                ,ERROR_CD
+                ,TO_CHAR(EVENT_DATE,'YYYYMMDD') as EVENT_DATE
+                ,EVENT_TIME
+                ,TICKET_COMMENT
+                ,IF_SEND_DATE
+                ,IF_SEND_DATE_TEXT
+                ,IF_SEND_TME_TEXT
+                ,IF_SEND_FLAG
+                ,IF_SEND_RESULT
+                ,IF_RES_DATE
+                ,IF_RES_DATE_TEXT
+                ,IF_RES_TME_TEXT
+                ,IF_RES_RESULT
+                ,CANCEL_DATE
+                ,CANCEL_DATE_TEXT
+                ,CANCEL_TME_TEXT
+                ,REG_DATE
+                ,REG_DATE_TEXT
+                ,REG_TME_TEXT
+                FROM T_TICKET_IF_SEND
+                WHERE 1=1
+                AND IF_SEND_FLAG = 'N'
+                AND REG_DATE > SYSDATE-7
+                ORDER BY IF_NO ASC
+                )
+                WHERE ROWNUM < 100
+            ]]>
+        </select>
+
+        <update id="setFlagtoTicket" parameterType="sendTicketDTO">
+            <![CDATA[
+                UPDATE T_TICKET_IF_SEND
+                SET IF_SEND_FLAG = 'I'
+                WHERE IF_NO = #{IF_NO}
+                AND   IF_SEND_FLAG = 'N'
+            ]]>
+        </update>
+
+        <update id="updateTicketIFStatus" parameterType="sendTicketDTO">
+            <![CDATA[
+                UPDATE T_TICKET_IF_SEND
+                SET IF_SEND_FLAG = #{IF_SEND_FLAG}
+                , IF_SEND_DATE = SYSDATE
+                , IF_SEND_DATE_TEXT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+                , IF_SEND_TME_TEXT = TO_CHAR(SYSDATE, 'HH24MISS')
+                , IF_SEND_RESULT = #{IF_SEND_RESULT}
+                WHERE IF_NO = #{IF_NO}
+            ]]>
+        </update>
+
+        <update id="updateT_Ticket_New" parameterType="sendTicketDTO">
+            <![CDATA[
+                UPDATE T_TICKET_NEW
+                SET STATUS = '09'
+                , RESPONSE_DATE = TO_CHAR(SYSDATE, 'YYYYMMDD')
+                , RESPONSE_TIME_HMS = TO_CHAR(SYSDATE, 'HH24MISS')
+                WHERE TN_NO = #{TN_NO}
+            ]]>
+        </update>
+
+
+        <select id="getTicketCount" parameterType="recvTicketDTO" resultType="java.lang.Integer">
+            <![CDATA[
+                select
+                COUNT(1) as TN_CNT
+                from T_TICKET_IF_RECV
+                where TN_NO = #{TN_NO}
+            ]]>
+        </select>
+
+
+        <select id="getTicketCloseCount" parameterType="recvTicketDTO" resultType="java.lang.Integer">
+            <![CDATA[
+                SELECT COUNT(1)
+                FROM T_TICKET_NEW
+                WHERE STATUS='10' AND TN_NO = #{TN_NO}
+            ]]>
+        </select>
+
+
+        <update id="insertRecvTicket" parameterType="recvTicketDTO">
+
+            <selectKey resultType="String" keyProperty="IF_NO" order="BEFORE">
+                SELECT TO_CHAR(SYSDATE, 'YYYYMMDD')||LPAD(GET_T_IF_RECV.NEXTVAL,12,'0') FROM DUAL
+            </selectKey>
+
+            INSERT INTO  T_TICKET_IF_RECV
+            (
+                IF_NO
+                ,RECV_DATE
+                ,RECV_DATE_TEXT
+                ,RECV_TIME_TEXT
+                ,TN_NO
+                ,VENDER_TICKETID
+                ,TERM_ID
+                ,VENDER_CD
+                ,VENDER_PHONE_NO
+                ,RESPONSE_DATE
+                ,DEPARTURE_DATE
+                ,ARRIVAL_DATE
+                ,COMPLETE_DATE
+                ,ACTION
+                ,PROC_FLAG
+            ) VALUES
+            (
+                #{IF_NO}
+                , SYSDATE
+                , TO_CHAR(SYSDATE, 'YYYYMMDD')
+                , TO_CHAR(SYSDATE, 'HH24MISS')
+                , TO_NUMBER(#{TN_NO})
+                , #{VENDER_TICKETID}
+                , #{TERM_ID}
+                , #{VENDER_CD}
+                , #{VENDOER_PHONE_NO}
+                , TO_DATE(#{RESPONSE_DATE}, 'YYYYMMDDHH24MISS')
+                , TO_DATE(#{DEPARTURE_DATE},'YYYYMMDDHH24MISS')
+                , TO_DATE(#{ARRIVAL_DATE}, 'YYYYMMDDHH24MISS')
+                , TO_DATE(#{COMPLETE_DATE},'YYYYMMDDHH24MISS')
+                , #{ACTION}
+                ,'N'
+            )
+
+        </update>
+
+        <update id="insertRecvTicket_his" parameterType="recvTicketDTO">
+
+            <selectKey resultType="String" keyProperty="IF_NO" order="BEFORE">
+                SELECT TO_CHAR(SYSDATE, 'YYYYMMDD')||LPAD(GET_T_IF_RECV_HIS.NEXTVAL,12,'0') FROM DUAL
+            </selectKey>
+
+            INSERT INTO  T_TICKET_IF_RECV_HIS
+            (
+                IF_NO
+                ,RECV_DATE
+                ,RECV_DATE_TEXT
+                ,RECV_TIME_TEXT
+                ,TN_NO
+                ,VENDER_TICKETID
+                ,TERM_ID
+                ,VENDER_CD
+                ,VENDER_PHONE_NO
+                ,RESPONSE_DATE
+                ,DEPARTURE_DATE
+                ,ARRIVAL_DATE
+                ,COMPLETE_DATE
+                ,ACTION
+                ,PROC_FLAG
+            ) VALUES
+            (
+                #{IF_NO}
+                , SYSDATE
+                , TO_CHAR(SYSDATE, 'YYYYMMDD')
+                , TO_CHAR(SYSDATE, 'HH24MISS')
+                , TO_NUMBER(#{TN_NO})
+                , #{VENDER_TICKETID}
+                , #{TERM_ID}
+                , #{VENDER_CD}
+                , #{VENDOER_PHONE_NO}
+                , TO_DATE(#{RESPONSE_DATE}, 'YYYYMMDDHH24MISS')
+                , TO_DATE(#{DEPARTURE_DATE},'YYYYMMDDHH24MISS')
+                , TO_DATE(#{ARRIVAL_DATE}, 'YYYYMMDDHH24MISS')
+                , TO_DATE(#{COMPLETE_DATE},'YYYYMMDDHH24MISS')
+                , #{ACTION}
+                ,'N'
+            )
+
+        </update>
+
+        <update id="updateRecvTicket" parameterType="recvTicketDTO">
+            <![CDATA[
+                UPDATE T_TICKET_IF_RECV
+                SET
+                RECV_DATE = SYSDATE
+                , RECV_DATE_TEXT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+                , RECV_TIME_TEXT = TO_CHAR(SYSDATE, 'HH24MISS')
+                , RESPONSE_DATE = TO_DATE(#{RESPONSE_DATE}, 'YYYYMMDDHH24MISS')
+                , DEPARTURE_DATE = TO_DATE(#{DEPARTURE_DATE},'YYYYMMDDHH24MISS')
+                , ARRIVAL_DATE = TO_DATE(#{ARRIVAL_DATE}, 'YYYYMMDDHH24MISS')
+                , COMPLETE_DATE = TO_DATE(#{COMPLETE_DATE},'YYYYMMDDHH24MISS')
+                , ACTION = #{ACTION}
+                , PROC_FLAG = 'N'
+                WHERE TN_NO = #{TN_NO}
+            ]]>
+        </update>
+
+
+
+        <update id="updateT_Ticket_New_Timestamp" parameterType="recvTicketDTO">
+            <![CDATA[
+                UPDATE T_TICKET_NEW
+                SET departure_date = SUBSTR(#{DEPARTURE_DATE}, 1, 8)
+                    , departure_time_hms = SUBSTR(#{DEPARTURE_DATE}, 9, 6)
+                    , arrival_date = SUBSTR(#{ARRIVAL_DATE}, 1, 8)
+                    , arrival_time_hms = SUBSTR(#{ARRIVAL_DATE}, 9, 6)
+                WHERE TN_NO = #{TN_NO}
+            ]]>
+        </update>
+
+        <update id="T_Ticket_New_Close" parameterType="recvTicketDTO">
+            <![CDATA[
+                UPDATE T_TICKET_NEW
+                SET complete_date = SUBSTR(#{COMPLETE_DATE}, 1, 8)
+                    , complete_time_hms = SUBSTR(#{COMPLETE_DATE}, 9, 6)
+                    , STATUS = '10'
+                WHERE TN_NO = #{TN_NO}
+            ]]>
+        </update>
+    -->
+
+	<update id="insertRecvTicketlog" parameterType="com.nht.moniwebsvc.restful.dto.MMrecvTicketDTO">
+			<![CDATA[
+				INSERT INTO EAGLE_RECEIVE_LOG (LOG_DATE, CHASE_MSG, TICKET_INFO, TICKET_ID, FAULT_CODE_COMPONENT, NATIVE_MESSAGE, TICKET_STATUS, FAULT_CODE)
+				VALUES ( SYSDATE, #{ChaseMsg}, #{TicketText}, #{TicketId}, #{FaultCodeComponent}, #{NativeMessage}, #{TicketStatus}, #{FaultCode} )
+			]]>
+    </update>
+
+	<update id="insert_ASM_GAS_RCPT" parameterType="com.nht.moniwebsvc.restful.dto.MMrecvTicketDTO">
+			<![CDATA[
+				INSERT INTO ASM_GAS_RCPT
+				( RCPT_SEQ,            FILE_NAME,    PROBLEM_DESC,	ASSETID,        GASPER_TICKETNO,	CALLER_NAME,
+				  STAT_CODE,           DIARY_CMNT,   LOG_DATE, 		CUST_CODE,	    PROC_FLAG,         NATIVE_CODE,			FAULT_CODE, 	FAULT_CODE_COMPONENT )
+				VALUES ( SEQ_RCPT_ID.NEXTVAL, 'IGATE',	#{FaultCodeComponent},	#{TermId},	#{TicketId},	'HQEDISERVICE',
+						 #{FaultCode},	#{Comments},	SYSDATE,	#{CustomerId},	'N',	#{NativeMessage},  #{FaultCode}, #{FaultCodeComponent} )
+			]]>
+    </update>
+
+</mapper>

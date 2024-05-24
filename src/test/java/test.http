@@ -1,0 +1,16 @@
+POST http://150.73.19.11:8080/MoniMCS/TESTService/UpdateTicket
+Content-Type: application/json
+Accept: Application/json
+Authorization: [Security MoniManager:TW9uaW1hbmFnZXJUaWNrZXQ=]
+
+{
+  "FaultCode": "010015",
+  "NativeMessage": "",
+  "TicketId": "668706",
+  "FaultCodeComponent": "",
+  "FaultCodeDescription": "Card Reader Card Jammed",
+  "Comments": "",
+  "CustomerId": 3,
+  "TicketStatus": "80",
+  "TermId": "nh2125XXX"
+}

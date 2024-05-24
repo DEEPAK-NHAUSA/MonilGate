@@ -1,0 +1,91 @@
+-dontshrink
+-dontoptimize
+-useuniqueclassmembernames
+-dontusemixedcaseclassnames
+-keeppackagenames *
+-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,LocalVariable*Table,*Annotation*,Synthetic,EnclosingMethod
+-keepparameternames
+-dontnote
+-dontwarn
+
+
+
+-keep,allowshrinking public class com.nht.moniwebsvc.common.* {
+    <fields>;
+    <methods>;
+}
+
+-keep,allowshrinking public class com.nht.moniwebsvc.restful.dto.* {
+    <fields>;
+    <methods>;
+}
+-keep,allowshrinking public class com.nht.moniwebsvc.job.dao.* {
+    <fields>;
+    <methods>;
+}
+-keep,allowshrinking public class com.nht.moniwebsvc.job.**.dao.* {
+    <fields>;
+    <methods>;
+}
+-keep,allowshrinking public class com.nht.moniwebsvc.job.jrulehis.vo.* {
+    <fields>;
+    <methods>;
+}
+-keep,allowshrinking public class com.nht.moniwebsvc.job.jrujcond.vo.* {
+    <fields>;
+    <methods>;
+}
+-keep,allowshrinking public class com.nht.moniwebsvc.job.jrunday1.vo.* {
+    <fields>;
+    <methods>;
+}
+-keep,allowshrinking public class com.nht.moniwebsvc.job.jrunday1.vo.* {
+    <fields>;
+    <methods>;
+}
+-keep,allowshrinking public class com.nht.moniwebsvc.job.**.vo.* {
+    <fields>;
+    <methods>;
+}
+-keep,allowshrinking public class com.nht.moniwebsvc.util.* {
+    <fields>;
+    <methods>;
+}
+
+# Keep - Applications. Keep all application classes, along with their 'main' methods.
+-keepclasseswithmembers public class * {
+    public static void main(java.lang.String[]);
+}
+
+# Keep - Servlets. Keep all extensions of javax.servlet.Servlet.
+-keep public class * extends javax.servlet.Servlet
+
+# Also keep - Enumerations. Keep the special static methods that are required in
+# enumeration classes.
+-keepclassmembers enum  * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+# Also keep - BeanInfo classes. Keep all implementations of java.beans.BeanInfo.
+-keep class * extends java.beans.BeanInfo
+
+# Also keep - Bean classes. Keep all specified classes, along with their getters
+# and setters.
+-keep class * {
+    void set*(***);
+    void set*(int,***);
+    boolean is*();
+    boolean is*(int);
+    *** get*();
+    *** get*(int);
+}
+
+# Also keep - Database drivers. Keep all implementations of java.sql.Driver.
+-keep class * extends java.sql.Driver
+
+# Also keep - Swing UI L&F. Keep all extensions of javax.swing.plaf.ComponentUI,
+# along with the special 'createUI' method.
+-keep class * extends javax.swing.plaf.ComponentUI {
+    public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent);
+}

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <!-- Appenders -->
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d[%-5p] [%c] %m%n" />
+        </layout>
+    </appender>
+    <appender name="dailyout" class="org.apache.log4j.DailyRollingFileAppender">  
+        <param name="file" value="/home/oracle/logs/monimcs/monimcs.log"/>  
+        <param name="Append" value="true"/>  
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern" value="[%-5p] %d{yyyy-MM-dd HH:mm:ss, SSS}: %c - %m%n"/>  
+        </layout>  
+    </appender>   
+    <appender name="dailyoutRest" class="org.apache.log4j.DailyRollingFileAppender">  
+        <param name="file" value="/home/oracle/logs/monimcs/monimcs_rest.log"/>  
+        <param name="Append" value="true"/>  
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern" value="[%-5p] %d{yyyy-MM-dd HH:mm:ss, SSS}: %c - %m%n"/>  
+        </layout>  
+    </appender>   
+    <appender name="dailyoutJob" class="org.apache.log4j.DailyRollingFileAppender">  
+        <param name="file" value="/home/oracle/logs/monimcs/monimcs_job.log"/>  
+        <param name="Append" value="true"/>  
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>  
+        <layout class="org.apache.log4j.PatternLayout">  
+            <param name="ConversionPattern" value="[%-5p] %d{yyyy-MM-dd HH:mm:ss, SSS}: %c - %m%n"/>  
+        </layout>  
+    </appender>
+    <appender name="jobHistory" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/home/oracle/logs/monimcs/job_all.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyMMdd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss, SSS} [%-5p]: %c - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="jobJrujcond" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/home/oracle/logs/monimcs/job_jrujcond.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyMMdd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss, SSS} [%-5p]: %c - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="jobJrulehisEvent" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/home/oracle/logs/monimcs/job_jrulehis_eventhis.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyMMdd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss, SSS} [%-5p]: %c - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="jobJrulehisNoEj" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/home/oracle/logs/monimcs/job_jrulehis_noejpull.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyMMdd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss, SSS} [%-5p]: %c - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="jobJrulehisRuleTicket" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/home/oracle/logs/monimcs/job_jrulehis_ruletickethis.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyMMdd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss, SSS} [%-5p]: %c - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="jobJrulehisRuleSch" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/home/oracle/logs/monimcs/job_jrulehis_schedule.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyMMdd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss, SSS} [%-5p]: %c - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="jobJrunday1" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/home/oracle/logs/monimcs/job_jrunday1.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyMMdd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss, SSS} [%-5p]: %c - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="jobJrunday2" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/home/oracle/logs/monimcs/job_jrunday2.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyMMdd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss, SSS} [%-5p]: %c - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="jobEscalation" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/home/oracle/logs/monimcs/job_escalation.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyMMdd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss, SSS} [%-5p]: %c - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="jobEscalationReport" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/home/oracle/logs/monimcs/job_escalation_report.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyMMdd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss, SSS} [%-5p]: %c - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="jobRestData" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/home/oracle/logs/monimcs/job_restdata.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyMMdd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss, SSS} [%-5p]: %c - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="jobPing" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/home/oracle/logs/monimcs/job_ping.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyMMdd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss, SSS} [%-5p]: %c - %m%n"/>
+        </layout>
+    </appender>
+    <logger name="com.nht.moniwebsvc.job.Ping" additivity="false">
+        <level value="info" />
+        <appender-ref ref="jobPing" />
+    </logger>
+
+	<logger name="org.springframework">
+		<level value="error" />
+	</logger>
+    <logger name="com.nht.moniwebsvc.job.sbi.escalation.noti"  additivity="false">
+        <level value="info" />
+        <appender-ref ref="jobEscalation" />
+    </logger>
+    <logger name="com.nht.moniwebsvc.job.sbi.escalation.report"  additivity="false">
+        <level value="debug" />
+        <appender-ref ref="jobEscalationReport" />
+    </logger>
+    <logger name="com.nht.moniwebsvc.restful.controller"  additivity="false">
+		<level value="info" />
+		<appender-ref ref="dailyoutRest" />
+	</logger>	  
+	<logger name="com.nht.moniwebsvc.restful.job"  additivity="false">
+		<level value="info" />
+		<appender-ref ref="dailyoutJob" />
+	</logger>
+    <logger name="com.nht.moniwebsvc.job"  additivity="false">
+        <level value="info" />
+        <appender-ref ref="jobHistory" />
+    </logger>
+    <logger name="com.nht.moniwebsvc.job.jrujcond"  additivity="false">
+        <level value="info" />
+        <appender-ref ref="jobJrujcond" />
+    </logger>
+    <logger name="com.nht.moniwebsvc.job.jrulehis.EventHisMain"  additivity="false">
+        <level value="info" />
+        <appender-ref ref="jobJrulehisEvent" />
+    </logger>
+    <logger name="com.nht.moniwebsvc.job.jrulehis.EventHisSub"  additivity="false">
+        <level value="info" />
+        <appender-ref ref="jobJrulehisEvent" />
+    </logger>
+    <logger name="com.nht.moniwebsvc.job.jrulehis.NoEJPullMain"  additivity="false">
+        <level value="info" />
+        <appender-ref ref="jobJrulehisNoEj" />
+    </logger>
+    <logger name="com.nht.moniwebsvc.job.jrulehis.RuleTicketMain"  additivity="false">
+        <level value="info" />
+        <appender-ref ref="jobJrulehisRuleTicket" />
+    </logger>
+    <logger name="com.nht.moniwebsvc.job.jrulehis.ScheduleMain"  additivity="false">
+        <level value="info" />
+        <appender-ref ref="jobJrulehisRuleSch" />
+    </logger>
+    <logger name="com.nht.moniwebsvc.job.jrunday1"  additivity="false">
+        <level value="info" />
+        <appender-ref ref="jobJrunday1" />
+    </logger>
+    <logger name="com.nht.moniwebsvc.job.jrunday2"  additivity="false">
+        <level value="info" />
+        <appender-ref ref="jobJrunday2" />
+    </logger>
+    <logger name="com.nht.moniwebsvc.job.restdata"  additivity="false">
+        <level value="info" />
+        <appender-ref ref="jobRestData" />
+    </logger>
+    <!-- Root Logger -->
+    <root>
+        <priority value="error" />
+        <appender-ref ref="dailyout" />
+    </root>
+    
+</log4j:configuration>

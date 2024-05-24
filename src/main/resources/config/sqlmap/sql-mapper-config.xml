@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="jdbcTypeForNull" value="VARCHAR"/>
+		<!-- 값이 null인 컬럼 누락 방지 -->
+        <setting name="callSettersOnNulls" value="true"/>
+	</settings>
+    <typeAliases>
+        <typeAlias alias="WebServiceSendDTO"                      type = "com.nht.moniwebsvc.restful.dto.WebServiceSendDTO"/>
+        <typeAlias alias="sendTicketDTO"                      type = "com.nht.moniwebsvc.restful.dto.sendTicketDTO"/>
+        <typeAlias alias="recvTicketDTO"                      type = "com.nht.moniwebsvc.restful.dto.recvTicketDTO"/>
+
+<!--
+        <typeAlias alias="NowDateVO"                                type = "com.nht.moniwebsvc.job.NowDateVO"/>
+        <typeAlias alias="JobStatusVO"                              type = "com.nht.moniwebsvc.job.JobStatusVO"/>
+
+        <typeAlias alias="EventHisInfoVO"                           type = "com.nht.moniwebsvc.job.jrulehis.vo.EventHisInfoVO"/>
+        <typeAlias alias="EventHisKeyVO"                            type = "com.nht.moniwebsvc.job.jrulehis.vo.EventHisKeyVO"/>
+        <typeAlias alias="RuleHisInfoVO"                            type = "com.nht.moniwebsvc.job.jrulehis.vo.RuleHisInfoVO"/>
+        <typeAlias alias="SearchDateVO"                             type = "com.nht.moniwebsvc.job.SearchDateVO"/>
+        <typeAlias alias="SearchScheduleVO"                         type = "com.nht.moniwebsvc.job.jrulehis.vo.SearchScheduleVO"/>
+        <typeAlias alias="TicketInfoVO"                             type = "com.nht.moniwebsvc.job.jrulehis.vo.TicketInfoVO"/>
+        <typeAlias alias="ATMSearchVO"                              type = "com.nht.moniwebsvc.job.jrulehis.vo.ATMSearchVO"/>
+
+        <typeAlias alias="RuleScheduleActVO"                        type = "com.nht.moniwebsvc.job.jrulehis.vo.RuleScheduleActVO"/>
+        <typeAlias alias="RecoveryTicketNewVO"                      type = "com.nht.moniwebsvc.job.jrulehis.vo.RecoveryTicketNewVO"/>
+
+        <typeAlias alias="EjNotPullKeyVO"                           type = "com.nht.moniwebsvc.job.jrulehis.vo.EjNotPullKeyVO"/>
+        <typeAlias alias="EventTicketHisKeyVO"                      type = "com.nht.moniwebsvc.job.jrulehis.vo.EventTicketHisKeyVO"/>
+        <typeAlias alias="TicketInterfaceVO"                        type = "com.nht.moniwebsvc.job.jrulehis.vo.TicketInterfaceVO"/>
+
+        <typeAlias alias="ATMApplyHistVO"     type = "com.nht.moniwebsvc.job.jrujcond.vo.ATMApplyHistVO"/>
+        <typeAlias alias="ATMDownloadVO"      type = "com.nht.moniwebsvc.job.jrujcond.vo.ATMDownloadVO"/>
+        <typeAlias alias="LogUploadHistVO"    type = "com.nht.moniwebsvc.job.jrujcond.vo.LogUploadHistVO"/>
+        <typeAlias alias="ptccoGetSerialNoVO" type = "com.nht.moniwebsvc.job.jrujcond.vo.PtccoGetSerialNoVO"/>
+        <typeAlias alias="RemoteInterfaceVO"  type = "com.nht.moniwebsvc.job.jrujcond.vo.RemoteInterfaceVO"/>
+        <typeAlias alias="RuleHistActVO"      type = "com.nht.moniwebsvc.job.jrujcond.vo.RuleHistActVO"/>
+        <typeAlias alias="RuleInfoVO"         type = "com.nht.moniwebsvc.job.jrujcond.vo.RuleInfoVO"/>
+        <typeAlias alias="RuleKeyVO"          type = "com.nht.moniwebsvc.job.jrujcond.vo.RuleKeyVO"/>
+        <typeAlias alias="RuleTicketListVO"   type = "com.nht.moniwebsvc.job.jrujcond.vo.RuleTicketListVO"/>
+        <typeAlias alias="RuleActEmailHisVO"  type = "com.nht.moniwebsvc.job.jrujcond.vo.RuleActEmailHisVO"/>
+        <typeAlias alias="TicketNewVO"        type = "com.nht.moniwebsvc.job.jrujcond.vo.TicketNewVO"/>
+
+        <typeAlias alias="JobRunHistoryVO"                      type = "com.nht.moniwebsvc.job.vo.JobRunHistoryVO"/>
+        <typeAlias alias="JobProcessResultVO"                   type = "com.nht.moniwebsvc.job.vo.JobProcessResultVO"/>
+        <typeAlias alias="JobProcessVO"                         type = "com.nht.moniwebsvc.job.vo.JobProcessVO"/>
+        <typeAlias alias="JobRedoVO"                            type = "com.nht.moniwebsvc.job.vo.JobRedoVO"/>
+
+        <typeAlias alias="TicketInfoIfVO"                        type = "com.nht.moniwebsvc.job.restdata.vo.TicketInfoVO"/>
+        <typeAlias alias="TicketMarkVO"                          type = "com.nht.moniwebsvc.job.restdata.vo.TicketMarkVO"/>
+        <typeAlias alias="CheckVoiceCallResultVO"                type = "com.nht.moniwebsvc.job.restdata.vo.CheckVoiceCallResultVO"/>
+
+        <typeAlias alias="NotiExecuteInfoVO"                      type = "com.nht.moniwebsvc.job.sbi.escalation.noti.vo.NotiExecuteInfoVO"/>
+        <typeAlias alias="NotiContentsInfoVO"                     type = "com.nht.moniwebsvc.job.sbi.escalation.noti.vo.NotiContentsInfoVO"/>
+        <typeAlias alias="NotiContentsSearchVO"                   type = "com.nht.moniwebsvc.job.sbi.escalation.noti.vo.NotiContentsSearchVO"/>
+        <typeAlias alias="CodeSearchVO"                           type = "com.nht.moniwebsvc.job.sbi.escalation.noti.vo.CodeSearchVO"/>
+        <typeAlias alias="UserDataTypeVO"                         type = "com.nht.moniwebsvc.job.sbi.escalation.noti.vo.UserDataTypeVO"/>
+        <typeAlias alias="AdminRollUserSearchVO"                  type = "com.nht.moniwebsvc.job.sbi.escalation.noti.vo.AdminRollUserSearchVO"/>
+        <typeAlias alias="NotiContentsRecvUserVO"                 type = "com.nht.moniwebsvc.job.sbi.escalation.noti.vo.NotiContentsRecvUserVO"/>
+        <typeAlias alias="NotificationVO"                         type = "com.nht.moniwebsvc.job.sbi.escalation.noti.vo.NotificationVO"/>
+        <typeAlias alias="NotificationDetailVO"                   type = "com.nht.moniwebsvc.job.sbi.escalation.noti.vo.NotificationDetailVO"/>
+        <typeAlias alias="NotiPreviewVO"                          type = "com.nht.moniwebsvc.job.sbi.escalation.noti.vo.NotiPreviewVO"/>
+        <typeAlias alias="AtmRunhistoryHourVO"                    type = "com.nht.moniwebsvc.job.sbi.escalation.noti.vo.AtmRunhistoryHourVO"/>
+        <typeAlias alias="AtmOpHistoryHourVO"                     type = "com.nht.moniwebsvc.job.sbi.escalation.noti.vo.AtmOpHistoryHourVO"/>
+        <typeAlias alias="AtmRunTimeHourVO"                       type = "com.nht.moniwebsvc.job.sbi.escalation.noti.vo.AtmRunTimeHourVO"/>
+        <typeAlias alias="ReportJobMngVO"                         type = "com.nht.moniwebsvc.job.sbi.escalation.noti.vo.ReportJobMngVO"/>
+        <typeAlias alias="AvailabilityRunDateVO"                  type = "com.nht.moniwebsvc.job.sbi.escalation.noti.vo.AvailabilityRunDateVO"/>
+        <typeAlias alias="AtmInfoVO"                              type = "com.nht.moniwebsvc.job.Ping.vo.AtmInfoVO"/>
+-->
+
+    </typeAliases>
+</configuration>

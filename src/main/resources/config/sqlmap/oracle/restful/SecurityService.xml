@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nht.moniwebsvc.restful.dao.SecurityServiceMapper">
+	<resultMap id="securityInterfaceModelR" type="java.util.HashMap">
+	 	<result property="seq_no" column="seq_no"/>
+	 	<result property="term_id" column="term_id" />
+	 	<result property="tr_id" column="tr_id" />
+	 	<result property="tx_id" column="tx_id" />
+	 	<result property="command" column="command" />	 	
+	 	<result property="atm_ip" column="atm_ip" />
+	 	<result property="request_date" column="request_date" />
+	 	<result property="request_time" column="request_time" />
+	 	<result property="receive_date1" column="receive_date1" />
+	 	<result property="receive_time1" column="receive_time1" />
+	 	<result property="receive_date2" column="receive_date2" />
+	 	<result property="receive_time2" column="receive_time2" />	 	
+	 	<result property="emp_id" column="emp_id" />
+	 	<result property="receive_data1" column="receive_data1" />
+	 	<result property="receive_data2" column="receive_data2" />	 	
+	 	<result property="response_cd" column="response_cd" />
+	 	<result property="ref_mng_no" column="ref_mng_no" />
+	 	<result property="status_cd" column="status_cd" />	 	
+	 	<result property="history_type" column="history_type" />
+	</resultMap>
+	
+	<resultMap id="securityInterfaceModelR2" type="java.util.HashMap">
+	 	<result property="seq_no" column="seq_no"/>
+	 	<result property="term_id" column="term_id" />
+	 	<result property="tr_id" column="tr_id" />
+	 	<result property="tx_id" column="tx_id" />
+	 	<result property="command" column="command" />	 	
+	 	<result property="atm_ip" column="atm_ip" />
+	 	<result property="request_date" column="request_date" />
+	 	<result property="request_time" column="request_time" />
+	 	<result property="receive_date1" column="receive_date1" />
+	 	<result property="receive_time1" column="receive_time1" />
+	 	<result property="receive_date2" column="receive_date2" />
+	 	<result property="receive_time2" column="receive_time2" />	 	
+	 	<result property="emp_id" column="emp_id" />
+	 	<result property="receive_data1" column="receive_data1" />
+	 	<result property="receive_data2" column="receive_data2" />	 	
+	 	<result property="response_cd" column="response_cd" />
+	 	<result property="ref_mng_no" column="ref_mng_no" />
+	 	<result property="status_cd" column="status_cd" />	 	
+	 	<result property="history_type" column="history_type" />
+	 	<result property="u_action_detail" column="u_action_detail" />
+	 	<result property="p_action_detail" column="p_action_detail" />
+	 	<result property="action_cd" column="action_cd" />
+	</resultMap>
+	
+	<!-- 
+	<parameterMap id="securityInterfaceModelP" class="java.util.HashMap">
+	 	<parameter property="seq_no" jdbcType="VARCHAR" mode="IN"/>
+	 	<parameter property="term_id" jdbcType="VARCHAR" mode="IN"/>
+	 	<parameter property="tr_id" jdbcType="VARCHAR" mode="IN" />
+	 	<parameter property="tx_id" jdbcType="VARCHAR" mode="IN" />
+	 	<parameter property="command" jdbcType="VARCHAR" mode="IN" />	 	
+	 	<parameter property="atm_ip" jdbcType="VARCHAR" mode="IN" />
+	 	<parameter property="request_date" jdbcType="VARCHAR" mode="IN" />
+	 	<parameter property="request_time" jdbcType="VARCHAR" mode="IN" />
+	 	<parameter property="receive_date1" jdbcType="VARCHAR" mode="IN" />
+	 	<parameter property="receive_time1" jdbcType="VARCHAR" mode="IN" />
+	 	<parameter property="receive_date2" jdbcType="VARCHAR" mode="IN" />
+	 	<parameter property="receive_time2" jdbcType="VARCHAR" mode="IN" />	 	
+	 	<parameter property="emp_id" jdbcType="VARCHAR" mode="IN" />
+	 	<parameter property="receive_data1" jdbcType="VARCHAR" mode="IN" />
+	 	<parameter property="receive_data2" jdbcType="VARCHAR" mode="IN" />	 	
+	 	<parameter property="response_cd" jdbcType="VARCHAR" mode="IN" />
+	 	<parameter property="ref_mng_no" jdbcType="VARCHAR" mode="IN" />
+	 	<parameter property="status_cd" jdbcType="VARCHAR" mode="IN" />	 
+    </parameterMap> -->
+
+    <select id="getAtomConfig" parameterType="java.lang.String" resultType="java.lang.String">
+        <![CDATA[
+        	SELECT CFG_VALUE 
+        	  FROM T_ATOMCONFIG
+			 WHERE CFG_NAME = #{cfgName}
+			   AND USE_FLAG = '1'
+        ]]>
+    </select>
+
+	<update id="updateSecurityInterface1" parameterType="java.util.HashMap">
+		update T_SECURITY_INTERFACE set
+		command = #{command},
+		command2 = #{command2},
+		status_cd = #{status_cd},
+		receive_date1 = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		receive_time1 = TO_CHAR(SYSDATE, 'HH24MISS'),
+		receive_data1 = #{receive_data1}
+		where seq_no = #{seq_no}
+	</update>
+
+	<update id="updateSecurityInterface2" parameterType="java.util.HashMap">
+		update T_SECURITY_INTERFACE set
+		status_cd = #{status_cd},
+		receive_date2 = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		receive_time2 = TO_CHAR(SYSDATE, 'HH24MISS'),
+		receive_data2 = #{receive_data2},
+		response_cd = #{response_cd},
+		response_message = #{response_message}
+		where seq_no = #{seq_no}
+	</update>
+    
+    <update id="updateSecurityInterface3" parameterType="java.util.HashMap">
+		update T_SECURITY_INTERFACE set
+		status_cd = #{status_cd},
+		response_message = #{response_message}
+		where seq_no = #{seq_no}
+	</update>
+	
+	<update id="updateSecurityInterface4" parameterType="java.util.HashMap">
+		update T_SECURITY_INTERFACE set
+		receive_data2 = #{receive_data2},
+		response_cd = #{response_cd},
+		response_message = #{response_message},
+		status_cd = #{status_cd}
+		where seq_no = #{seq_no}
+	</update>
+	
+    <select id="searchSecurityInterface" parameterType="java.util.HashMap" resultMap="securityInterfaceModelR">
+        <![CDATA[
+			SELECT
+			T.*
+			FROM T_SECURITY_INTERFACE T
+			WHERE T.SEQ_NO = #{seq_no}	
+			and T.status_cd = #{status_cd}		
+        ]]>
+    </select>
+
+    <select id="searchSecurityInterface2" parameterType="java.util.HashMap" resultMap="securityInterfaceModelR2">
+    	<if test='S_TYPE =="1"'>
+    	   SELECT *
+    	     FROM ( 
+				select a.*, '' as action_cd,  '' as p_action_detail, '' as u_action_detail
+				from T_SECURITY_INTERFACE a
+				where a.term_id = #{term_id}
+				<!-- and a.status_cd in ('4', '9') -->
+				and a.tx_id like '15__'
+				and a.tx_id != '1510'
+				order by a.request_date desc, a.request_time desc
+			   )
+			WHERE ROWNUM = 1
+		</if> 
+    	<if test='S_TYPE =="2"'>
+    	   SELECT *
+    	     FROM ( 
+				select a.*,
+				(select b.action_cd from t_system_evtlog b where b.term_id=a.term_id and b.status_cd='0') as action_cd,  '' as p_action_detail, '' as u_action_detail
+				from T_SECURITY_INTERFACE a
+				where a.term_id = #{term_id}
+				<!-- and a.status_cd in ('4', '9') -->
+				and a.tx_id like '16__'
+				and a.tx_id != '1600'
+				order by a.request_date desc, a.request_time desc
+			   )
+			WHERE ROWNUM = 1
+		</if> 
+    	<if test='S_TYPE =="3"'>
+    	   SELECT *
+    	     FROM ( 
+				select a.*, '' as action_cd,
+				(select b.action_detail from t_system_protection b where b.term_id=a.term_id and b.action_cd='1' and b.status_cd='0') as p_action_detail,
+				(select b.action_detail from t_system_protection b where b.term_id=a.term_id and b.action_cd='2' and b.status_cd='0') as u_action_detail
+				from T_SECURITY_INTERFACE a
+				where a.term_id = #{term_id}
+				<!-- and a.status_cd in ('4', '9') -->
+				and (a.tx_id like '17__' or a.tx_id like '18__')
+				and a.tx_id != '1700'
+				order by a.request_date desc, a.request_time desc
+			   )
+			WHERE ROWNUM = 1
+		</if> 
+    </select>
+    
+    <select id="searchSecurityInterface3" parameterType="java.util.HashMap" resultMap="securityInterfaceModelR">
+        <![CDATA[
+			SELECT
+			T.*
+			FROM T_SECURITY_INTERFACE T
+			WHERE T.TERM_ID = #{term_id}
+			and T.status_cd = #{status_cd}			
+        ]]>
+    </select>
+
+    <!-- <select id="getSecurityInterface4" parameterType="java.util.HashMap" resultMap="securityInterfaceModelR">
+			SELECT
+			T.*
+			FROM T_SECURITY_INTERFACE T
+			WHERE T.status_cd
+			<iterate prepend="NOT IN" property="status_cd" open="(" close=")" conjunction=",">
+			 #status_cd[]#
+			</iterate>									
+    </select> -->
+    
+    <select id="searchSecurityInterface4" parameterType="java.util.HashMap" resultMap="securityInterfaceModelR">
+			SELECT
+			CONCAT(T.seq_no,'') as seq_no,
+			T.term_id,
+			T.tr_id,
+			T.tx_id,
+			T.command,
+			T.atm_ip,
+			T.request_date,
+			T.request_time,
+			T.receive_date1,
+			T.receive_time1,
+			T.receive_date2,
+			T.receive_time2,
+			T.emp_id,
+			T.receive_data1,
+			T.receive_data2,
+			T.response_cd,
+			T.ref_mng_no,
+			T.status_cd,
+			T.history_type
+			FROM T_SECURITY_INTERFACE T
+			WHERE T.status_cd not in ('4','9')
+    </select>
+
+	<resultMap id="systemAccountModelR" type="java.util.HashMap">
+	 	<result property="mng_no" column="mng_no"/>
+	 	<result property="term_id" column="term_id" />
+	 	<result property="account" column="account" />
+	 	<result property="old_password" column="old_password" />
+	 	<result property="password" column="password" />	 	
+	 	<result property="active" column="active" />
+	 	<result property="create_date" column="create_date" />
+	 	<result property="create_time" column="create_time" />
+	 	<result property="edit_status" column="edit_status" />
+	 	<result property="status_cd" column="status_cd" />
+	</resultMap>
+    <select id="searchSystemAccount" parameterType="java.util.HashMap" resultMap="systemAccountModelR">
+        <![CDATA[
+			SELECT
+			T.mng_no,
+			T.TERM_ID,
+			T.ACCOUNT,
+		    DECODE(T.OLD_PASSWORD,NULL,NULL, crypto_aes256.DEC_AES(T.OLD_PASSWORD))  as OLD_PASSWORD,
+		    DECODE(T.PASSWORD,NULL,NULL, crypto_aes256.DEC_AES(T.PASSWORD))  as PASSWORD,
+			T.ACTIVE,
+			T.CREATE_DATE,
+			T.CREATE_TIME,
+			T.EDIT_STATUS,
+			T.STATUS_CD
+			FROM T_SYSTEM_ACCOUNT T
+			WHERE T.MNG_NO = #{mng_no}
+			and T.TERM_ID = #{term_id}
+			and T.status_cd = #{status_cd}
+        ]]>
+    </select>
+
+	<delete id="deleteSystemAccount" parameterType="java.util.HashMap">
+        <![CDATA[
+			DELETE FROM T_SYSTEM_ACCOUNT
+			where TERM_ID = #{term_id}
+			and status_cd = #{status_cd}
+        ]]>
+    </delete>
+    
+   	<delete id="deleteSystemProtection" parameterType="java.util.HashMap">
+        <![CDATA[
+			DELETE FROM T_SYSTEM_PROTECTION
+			where TERM_ID = #{term_id}
+			and status_cd = #{status_cd}
+        ]]>
+    </delete>
+
+   	<delete id="deleteSystemEvtlog" parameterType="java.util.HashMap">
+        <![CDATA[
+			DELETE FROM t_system_evtlog
+			where TERM_ID = #{term_id}
+			and status_cd = #{status_cd}
+        ]]>
+    </delete>
+    
+    <delete id="deleteSystemEvtlogSet" parameterType="java.util.HashMap">
+        <![CDATA[
+			DELETE FROM t_system_evtlog_set
+			where TERM_ID = #{term_id}
+			and status_cd = #{status_cd}
+			and type = #{history_type}
+        ]]>
+    </delete>
+
+    <delete id="deleteMasterPasswordHistory" parameterType="java.util.HashMap">
+        <![CDATA[
+			DELETE FROM T_MST_PWD_HIST
+			where TERM_ID = #{term_id}
+			and status_cd = #{status_cd}
+			and mng_no = #{mng_no}
+        ]]>
+    </delete>
+
+    <delete id="deleteSystemProtectionFiles" parameterType="java.util.HashMap">
+        <![CDATA[
+			DELETE FROM t_system_protection_file
+			where TERM_ID = #{term_id}
+        ]]>
+    </delete>
+
+	<delete id="deleteSystemAccountEdit" parameterType="java.util.HashMap">
+        <![CDATA[
+			DELETE FROM T_SYSTEM_ACCOUNT
+			where TERM_ID = #{term_id}
+			and EDIT_STATUS = #{edit_status}
+        ]]>
+    </delete>
+    
+    <select id="getSystemAccountCnt" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+        <![CDATA[
+			SELECT COUNT(*) CNT
+			FROM T_SYSTEM_ACCOUNT T
+			WHERE T.account = #{account}
+			and T.term_id = #{term_id}
+			and T.status_cd = #{status_cd}
+        ]]>
+    </select>
+	
+	<insert id="insertSystemAccountNew" parameterType="java.util.HashMap">
+        <![CDATA[
+			insert into T_SYSTEM_ACCOUNT (mng_no, term_id, account, old_password , password , active, create_date, create_time, edit_status, status_cd, ref_seq_no) values
+			(
+				#{mng_no},
+				#{term_id},
+				#{account},
+				NULL,
+				NULL,
+				#{active},
+				TO_CHAR(SYSDATE, 'YYYYMMDD'),
+				TO_CHAR(SYSDATE, 'HH24MISS'),
+				#{edit_status},
+				#{status_cd},
+				#{seq_no}
+			)
+        ]]>
+    </insert>
+    
+	<update id="updateSystemAccountNew" parameterType="java.util.HashMap">
+        <![CDATA[
+			update T_SYSTEM_ACCOUNT 
+				SET active=#{active}, 
+				create_date=TO_CHAR(SYSDATE, 'YYYYMMDD'), 
+				create_time=TO_CHAR(SYSDATE, 'HH24MISS'), 
+				ref_seq_no=#{seq_no}
+			WHERE account = #{account} and status_cd = #{status_cd} and term_id = #{term_id} 
+        ]]>
+    </update>    
+    	
+	<insert id="mergeIntoSystemAccount" parameterType="java.util.HashMap">
+        <![CDATA[
+			insert into T_SYSTEM_ACCOUNT (mng_no, term_id, account, active, create_date, create_time, edit_status, status_cd, ref_seq_no) values
+			(
+				#{mng_no},
+				#{term_id},
+				#{account},
+				#{active},
+				TO_CHAR(SYSDATE, 'YYYYMMDD'),
+				TO_CHAR(SYSDATE, 'HH24MISS'),
+				#{edit_status},
+				#{status_cd},
+				#{seq_no}
+			);
+			/* 
+			on duplicate key 
+			
+			account, status_cd, term_id
+			*/
+			update T_SYSTEM_ACCOUNT 
+				SET active=#{active}, 
+				create_date=TO_CHAR(SYSDATE, 'YYYYMMDD'), 
+				create_time=TO_CHAR(SYSDATE, 'HH24MISS'), 
+				ref_seq_no=#{seq_no}
+			WHERE account = #{account} and status_cd = #{status_cd} and term_id = #{term_id} ;
+				
+        ]]>
+    </insert>
+
+	<resultMap id="systemEvtModelR" type="java.util.HashMap">
+	 	<result property="mng_no" column="mng_no"/>
+	 	<result property="term_id" column="term_id" />
+	 	<result property="type" column="type" />
+	 	<result property="action_cd" column="action_cd" />
+		<result property="action_name" column="action_name" />	 	
+	 	<result property="create_date" column="create_date" />	 	
+	 	<result property="create_time" column="create_time" />
+	 	<result property="status" column="status" />
+	 	<result property="log_set_info" column="log_set_info" />			 	
+	</resultMap>
+	
+    <select id="getSystemEvtLog" parameterType="java.util.HashMap" resultMap="systemEvtModelR">
+        <![CDATA[
+			SELECT
+			T.mng_no,
+			T.TERM_ID,
+			T.TYPE,
+			T.ACTION_CD,
+			(SELECT NAME FROM t_code WHERE LANG_CD='ENG' AND GROUP_CD='164' AND CODE=T.ACTION_CD) AS ACTION_NAME,
+			T.CREATE_DATE,
+			T.CREATE_TIME,
+			T.STATUS_CD
+			FROM T_SYSTEM_EVTLOG T
+			WHERE T.MNG_NO = #{mng_no}
+			and T.TERM_ID = #{term_id}
+			and T.status_cd = #{status_cd}
+        ]]>
+    </select>
+
+	<resultMap id="systemEvtSetModelR" type="java.util.HashMap">
+	 	<result property="log_set_info" column="log_set_info"/>
+	</resultMap>
+	
+    <select id="searchSystemEvtLogSet" parameterType="java.util.HashMap" resultMap="systemEvtSetModelR">
+        <![CDATA[
+			select F_GET_SYSTEMEVTSET(#{mng_no}, #{term_id}, #{status_cd}, #{history_type}) as log_set_info from dual
+        ]]>
+    </select>
+
+	<resultMap id="systemProtectionModelR" type="java.util.HashMap">
+	 	<result property="mng_no" column="mng_no"/>
+	 	<result property="term_id" column="term_id" />
+	 	<result property="action_cd" column="action_cd" />
+	 	<result property="action_detail" column="action_detail" />
+		<result property="action_detail_name" column="action_detail_name" />	 	
+	 	<result property="create_date" column="create_date" />	 	
+	 	<result property="create_time" column="create_time" />
+	 	<result property="status_cd" column="status_cd" />
+	 	<result property="master_password" column="master_password" />
+	 	<result property="change_password" column="change_password" />		
+	</resultMap>
+
+    <select id="searchSystemProtection" parameterType="java.util.HashMap" resultMap="systemProtectionModelR">
+        <![CDATA[
+			SELECT
+			T.mng_no,
+			T.TERM_ID,
+			T.ACTION_CD,
+			T.ACTION_DETAIL,
+			(SELECT NAME FROM t_code WHERE LANG_CD='ENG' AND GROUP_CD='164' AND CODE=T.ACTION_CD) AS ACTION_DETAIL_NAME,
+			T.CREATE_DATE,
+			T.CREATE_TIME,
+			T.STATUS_CD,
+			
+			(select PASSWORD FROM (SELECT crypto_aes256.DEC_AES(T2.PASSWORD ) as PASSWORD 
+ 			FROM T_MST_PWD_HIST T2 WHERE T2.TERM_ID=T.TERM_ID AND T2.STATUS_CD='1' ORDER BY DEGREE_NO desc ) where rownum=1) AS MASTER_PASSWORD,
+
+            (select PASSWORD FROM (SELECT crypto_aes256.DEC_AES(T2.PASSWORD ) as PASSWORD 
+			FROM T_MST_PWD_HIST T2 WHERE T2.TERM_ID=T.TERM_ID AND T2.STATUS_CD='0' ORDER BY DEGREE_NO desc ) where rownum=1) AS CHANGE_PASSWORD
+
+			FROM T_SYSTEM_PROTECTION T
+			WHERE T.MNG_NO = #{mng_no}
+			and T.TERM_ID = #{term_id}
+			and T.status_cd = #{status_cd}
+        ]]>
+    </select>
+    
+    <resultMap id="getMasterPasswordModelR" type="java.util.HashMap">
+         <result property="password" column="password"/>
+    </resultMap>
+    <select id="getMasterPassword" parameterType="java.util.HashMap" resultMap="getMasterPasswordModelR">
+	    select PASSWORD FROM (
+		    SELECT 
+		    crypto_aes256.DEC_AES (  T2.PASSWORD ) as PASSWORD
+		    FROM T_MST_PWD_HIST T2 
+	 		WHERE T2.TERM_ID=#{term_id}
+	 		AND T2.STATUS_CD='1' 
+	 		ORDER BY DEGREE_NO desc 	
+	 	) where rownum=1
+    </select> 
+        
+    <parameterMap id="getMngNoModel" type="java.util.HashMap">
+         <parameter property="mng_no" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT"/>
+    </parameterMap>
+    
+    <select id="getMngNo" parameterMap="getMngNoModel" statementType="CALLABLE">
+         { call GETSECURITY_MNG_NO(?) }
+    </select>
+         
+    <insert id="insertSystemEvtlogHistory" parameterType="java.util.HashMap">
+        <![CDATA[
+			insert into T_SYSTEM_EVTLOG_HISTORY (mng_no, term_id, log_name, level_cd, source, event_id, mod_date, mod_time, description, create_date, create_time) values
+			(
+				#{mng_no},
+				#{term_id},
+				#{log_name},
+				trim(NVL((select code from t_code where group_cd='413' and lower(name)=lower(#{level_cd})), 0)),
+				#{source},
+				#{event_id},
+				#{date},
+				#{time},
+				#{detail_message},				
+				TO_CHAR(SYSDATE, 'YYYYMMDD'),
+				TO_CHAR(SYSDATE, 'HH24MISS')
+			)
+        ]]>
+    </insert>
+    
+    <resultMap id="getTermIdModelR" type="java.util.HashMap">
+	 	<result property="term_id" column="term_id"/>		
+	</resultMap>
+    
+    <select id="getTermId" parameterType="java.util.HashMap" resultMap="getTermIdModelR">
+        <![CDATA[
+			select 
+				t.term_id 
+			from v_terminal_information t
+			WHERE t.atm_ip = #{atm_ip}
+        ]]>
+    </select>
+    
+    <update id="updateSystemProtection" parameterType="java.util.HashMap">
+		update t_system_protection 
+		set status_cd = #{status_cd}
+		where term_id = #{term_id}
+	</update>
+    
+    <update id="updateSystemProtection2" parameterType="java.util.HashMap">
+		update t_system_protection 
+		set action_detail = #{action_detail}
+		where action_cd = #{action_cd}
+		and term_id = #{term_id}
+		and status_cd = #{status_cd}
+	</update>
+    
+    <update id="updateSystemAccount" parameterType="java.util.HashMap">
+		update t_system_account 
+		set status_cd = #{status_cd}
+		where term_id = #{term_id}
+	</update>
+
+    <update id="updateSystemAccount2" parameterType="java.util.HashMap">
+		update t_system_account 
+		set edit_status = #{edit_status}
+		where term_id = #{term_id}
+		and edit_status != '3'
+	</update>
+    
+    <update id="updateSystemEvtlog" parameterType="java.util.HashMap">
+		update t_system_evtlog
+		set status_cd = #{status_cd}
+		where term_id = #{term_id}
+	</update>
+    
+    <update id="updateSystemEvtLogSet" parameterType="java.util.HashMap">
+		update t_system_evtlog_set
+		set status_cd = #{status_cd}
+		where term_id = #{term_id}
+		and type = #{history_type}
+	</update>
+	
+	<update id="updateMasterPasswordHistory" parameterType="java.util.HashMap">
+		update t_mst_pwd_hist
+		set status_cd = #{status_cd}
+		where term_id = #{term_id}
+		and mng_no = #{mng_no}
+	</update>
+    
+    <resultMap id="systemProtectionFilesModelR" type="java.util.HashMap">
+	 	<result property="mng_no" column="mng_no" />
+	 	<result property="term_id" column="term_id" />
+	 	<result property="file_path" column="file_path" />
+	 	<result property="file_name" column="file_name" />
+	 	<result property="check_sum" column="check_sum" />
+	 	<result property="file_type" column="file_type" />
+	 	<result property="type" column="type" />
+	 	<result property="create_date" column="create_date" />
+	 	<result property="create_time" column="create_time" />
+	</resultMap>
+
+    <select id="searchSystemProtectionFiles" parameterType="java.util.HashMap" resultMap="systemProtectionFilesModelR">
+        <![CDATA[
+			SELECT
+			t.mng_no,
+			t.term_id,
+			t.file_path,
+			t.file_name,
+			t.check_sum,
+			t.file_type,
+			t.type,
+			t.create_date,
+			t.create_time
+			FROM t_system_protection_file t
+			WHERE t.TERM_ID = #{term_id}
+        ]]>
+    </select>
+	
+	<update id="updateSystemStatus" parameterType="java.util.HashMap">
+		update t_system_status
+		set status_cd = #{status_cd}
+		where term_id = #{term_id}
+		and tx_id = #{tx_id}
+	</update>
+	
+	<delete id="deleteSystemAccountNoMerge" parameterType="java.util.HashMap">
+        <![CDATA[
+			DELETE FROM T_SYSTEM_ACCOUNT
+			where term_id = #{term_id} and status_cd = #{status_cd} and account not in ${deleteSc}
+        ]]>
+    </delete>	
+</mapper>

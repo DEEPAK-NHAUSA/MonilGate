@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/">
+    <!--url="jdbc:oracle:thin:@150.30.5.86:1521:mmorcl"-->
+    <!--url="jdbc:oracle:thin:@192.168.0.100:1521:mmorcl"-->
+    <!--url="jdbc:oracle:thin:@localhost:1522:orcl"-->
+    <!--testOnBorrow="true"-->
+    <!--validationQuery="SELECT 1 FROM DUAL"-->
+    <Resource name="jdbc/MCS_ORACLE"
+              auth="Container"
+              type="javax.sql.DataSource"
+              driverClassName="oracle.jdbc.driver.OracleDriver"
+              url="jdbc:oracle:thin:@150.30.5.86:1521:mmorcl"
+              username="atos"
+              password="atos"
+
+              initialSize="1"
+              minIdle="1"
+              maxIdle="5"
+              testOnBorrow="true"
+              validationQuery="SELECT 1 FROM DUAL"
+              removeAbandonedTimeout="60"
+    />
+</Context>

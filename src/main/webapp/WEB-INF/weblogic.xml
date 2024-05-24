@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<weblogic-web-app
+    xmlns="http://www.bea.com/ns/weblogic/90"
+    xmlns:j2ee="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.bea.com/ns/weblogic/90 http://www.bea.com/ns/weblogic/90/weblogic-web-app.xsd">
+<context-root>/Moni</context-root>
+    <container-descriptor>
+        <show-archived-real-path-enabled>true</show-archived-real-path-enabled>
+        
+        <prefer-application-packages>
+             <package-name>org.apache.xmlbeans.*</package-name>
+         </prefer-application-packages>
+    </container-descriptor>
+    
+     <session-descriptor>
+        <cookie-name>MMMCSSESSIONID</cookie-name>
+    </session-descriptor>
+    
+<!--
+<session-descriptor>
+    <timeout-secs>7200</timeout-secs>
+</session-descriptor>
+-->
+</weblogic-web-app>

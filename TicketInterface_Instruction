@@ -1,0 +1,43 @@
+#2019.11.22
+if use ticket rest service then set Y or N
+
+ public static String cfg_name_for_ticket_rest_use_yn = "REST_TICKET_IF";
+
+
+TermId is Term# of Monimanager
+
+service.properties file related configure
+
+moni_assist_ws=http://150.73.20.37:8120
+log_location=/home/oracle/logs/monimcs/
+
+
+ticket상태 업데이트 
+
+code group = 429
+
+
+t_ticket_new.status 
+
+05 - open : jrujcond에서 t_ticket_new테이블에 티켓을 생성할 때 05로 넣음
+
+08 - assigned : 티켓을  jmsender에서 t_ticket_if_send 테이블에 넣을 때 상태를 08로 바꿈
+
+
+티켓을 보내면 아래와 같이 조치 
+
+09 - in progress : MoniMCS에서 티켓을 assist로 보내면 09로 바꾸고 assist에서 응답을 받아서 t_ticket_new.response_date(varchar 8), response_time_hms(varchar 6), response_comment(varchar 500)을
+                                  업데이트 함
+
+ticket 상태 업데이트 전문을 assist로 부터 받으면 아래와 같이 조치
+
+                 VendorETA받으면  departure_date(varchar 8), departure_time_hms(varchar 6) 
+                 ActualArrivalTime받으면  arrival_date(varchar 8), arrival_time_hms(varchar 6)
+                 WorkCompletionTime 받으면 complete_date(varchar 8), complete_time_hms(varchar 6)
+                 Comments를 받으면 complete_action(varchar 2000)
+
+
+01 - completed : complete
+
+10 - closed
+
